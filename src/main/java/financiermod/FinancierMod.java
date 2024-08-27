@@ -1,12 +1,13 @@
-package basicmod;
+package financiermod;
 
 import basemod.BaseMod;
 import basemod.interfaces.EditKeywordsSubscriber;
 import basemod.interfaces.EditStringsSubscriber;
 import basemod.interfaces.PostInitializeSubscriber;
-import basicmod.util.GeneralUtils;
-import basicmod.util.KeywordInfo;
-import basicmod.util.TextureLoader;
+import financiermod.util.GeneralUtils;
+import financiermod.util.KeywordInfo;
+import financiermod.util.TextureLoader;
+
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglFileHandle;
@@ -28,7 +29,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @SpireInitializer
-public class BasicMod implements
+public class FinancierMod implements
         EditStringsSubscriber,
         EditKeywordsSubscriber,
         PostInitializeSubscriber {
@@ -46,10 +47,11 @@ public class BasicMod implements
 
     //This will be called by ModTheSpire because of the @SpireInitializer annotation at the top of the class.
     public static void initialize() {
-        new BasicMod();
+        System.out.println("Hello, world!");
+        new FinancierMod();
     }
 
-    public BasicMod() {
+    public FinancierMod() {
         BaseMod.subscribe(this); //This will make BaseMod trigger all the subscribers at their appropriate times.
         logger.info(modID + " subscribed to BaseMod.");
     }
@@ -175,7 +177,7 @@ public class BasicMod implements
      * Checks the expected resources path based on the package name.
      */
     private static String checkResourcesPath() {
-        String name = BasicMod.class.getName(); //getPackage can be iffy with patching, so class name is used instead.
+        String name = FinancierMod.class.getName(); //getPackage can be iffy with patching, so class name is used instead.
         int separator = name.indexOf('.');
         if (separator > 0)
             name = name.substring(0, separator);
@@ -188,7 +190,7 @@ public class BasicMod implements
         throw new RuntimeException("\n\tFailed to find resources folder; expected it to be named \"" + name + "\"." +
                 " Either make sure the folder under resources has the same name as your mod's package, or change the line\n" +
                 "\t\"private static final String resourcesFolder = checkResourcesPath();\"\n" +
-                "\tat the top of the " + BasicMod.class.getSimpleName() + " java file.");
+                "\tat the top of the " + FinancierMod.class.getSimpleName() + " java file.");
     }
 
     /**
@@ -200,7 +202,7 @@ public class BasicMod implements
             if (annotationDB == null)
                 return false;
             Set<String> initializers = annotationDB.getAnnotationIndex().getOrDefault(SpireInitializer.class.getName(), Collections.emptySet());
-            return initializers.contains(BasicMod.class.getName());
+            return initializers.contains(FinancierMod.class.getName());
         }).findFirst();
         if (infos.isPresent()) {
             info = infos.get();

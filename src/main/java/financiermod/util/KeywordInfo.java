@@ -1,4 +1,4 @@
-package basicmod.util;
+package financiermod.util;
 
 public class KeywordInfo {
     public String ID = "";

@@ -1,11 +1,12 @@
-package basicmod.cards;
+package financiermod.cards;
 
 import basemod.BaseMod;
 import basemod.abstracts.CustomCard;
 import basemod.abstracts.DynamicVariable;
-import basicmod.BasicMod;
-import basicmod.util.CardStats;
-import basicmod.util.TriFunction;
+import financiermod.FinancierMod;
+import financiermod.util.CardStats;
+import financiermod.util.TriFunction;
+
 import com.badlogic.gdx.graphics.Color;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
@@ -14,18 +15,18 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.localization.CardStrings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 
+import static financiermod.util.GeneralUtils.removePrefix;
+import static financiermod.util.TextureLoader.getCardTextureString;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import static basicmod.util.GeneralUtils.removePrefix;
-import static basicmod.util.TextureLoader.getCardTextureString;
 
 
 public abstract class BaseCard extends CustomCard {
     final private static Map<String, DynamicVariable> customVars = new HashMap<>();
 
-    protected static String makeID(String name) { return BasicMod.makeID(name); }
+    protected static String makeID(String name) { return FinancierMod.makeID(name); }
     protected CardStrings cardStrings;
 
     protected boolean upgradesDescription;
@@ -457,7 +458,7 @@ public abstract class BaseCard extends CustomCard {
             {
                 if (cardStrings.UPGRADE_DESCRIPTION == null)
                 {
-                    BasicMod.logger.error("Card " + cardID + " upgrades description and has null upgrade description.");
+                    FinancierMod.logger.error("Card " + cardID + " upgrades description and has null upgrade description.");
                 }
                 else
                 {

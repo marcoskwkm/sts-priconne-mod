@@ -1,4 +1,4 @@
-package basicmod.util;
+package financiermod.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 
+import static financiermod.FinancierMod.*;
+
 import java.util.HashMap;
 import java.util.Locale;
-
-import static basicmod.BasicMod.*;
 
 public class TextureLoader {
     private static final HashMap<String, Texture> textures = new HashMap<>();

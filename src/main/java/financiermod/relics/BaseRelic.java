@@ -1,15 +1,16 @@
-package basicmod.relics;
+package financiermod.relics;
 
 import basemod.abstracts.CustomRelic;
 import basemod.helpers.RelicType;
-import basicmod.util.GeneralUtils;
-import basicmod.util.TextureLoader;
+import financiermod.util.GeneralUtils;
+import financiermod.util.TextureLoader;
+
+import static financiermod.FinancierMod.relicPath;
+
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.localization.RelicStrings;
-
-import static basicmod.BasicMod.relicPath;
 
 public abstract class BaseRelic extends CustomRelic {
     public AbstractCard.CardColor pool = null;
