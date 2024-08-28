@@ -1,36 +1,9 @@
-# Basic Mod
+# Princess Connect Skins Mod
 
-This is an empty Slay the Spire mod + a modding tutorial.
+This is a Slay the Spire mod that reskins the default characters into Princess Connect characters (Pecorine, Kyaryl and Kokkoro).
 
-This tutorial will help with setup and the basics of Slay the Spire modding, but it will not teach you Java. If you know nothing of Java or programming in general, you are strongly recommended to look up a free online course and do at least some of it. It is possible to do modding with almost no proper knowledge, but it will make things much more difficult.
+This mod was built on top of Leucogeranus7744's [Princess](https://steamcommunity.com/sharedfiles/filedetails/?id=3239054915) [Connect](https://steamcommunity.com/sharedfiles/filedetails/?id=3239704666) [mods](https://steamcommunity.com/sharedfiles/filedetails/?id=3239074040). The purpose of this mod is to allow using any skin with any STS character, since the original mods tied each Princess Connect character to a particular STS character, leaving Watcher with no custom skin.
 
----
+This mod was bootstrapped using [Basic Mod](https://github.com/Alchyr/BasicMod). Please follow the [Basic Mod guide](https://github.com/Alchyr/BasicMod/wiki) to see how to build and use this mod.
 
-## Check the wiki to get started:
-
-https://github.com/Alchyr/BasicMod/wiki
-
----
-
-## Know what you're doing?
-
-You can still use this mod as a base, or you could use another template like https://github.com/DarkVexon/ProTemplate
-
-You can find more options in the pins of the #modding-technical channel in the Slay the Spire discord server.
-
----
-
-### Some HD Slay the Spire art assets (courtesy of Gremious, creator of DefaultMod):
-
-Includes:
-- Empty Relic Template feat. empty bottle
-- Empty Card Template
-- Color-Changable cardback
-- A couple of HD Monster vectors (Louse, Nob, Sentry, Sneaky Gremlin)
-- A coupe of HD items (J.A.X., A Coin)
-- 2 people silhouettes
-- A curse Background
-
-https://github.com/Gremious/StS-DefaultModBase#some-hd-slay-the-spire-art-assets
-
----
+I do not own any of the sprites used and all credits go to the original authors.
