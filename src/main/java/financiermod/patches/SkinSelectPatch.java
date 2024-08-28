@@ -15,8 +15,8 @@ public class SkinSelectPatch {
     clz = CharacterSelectScreen.class,
     method = "render"
     )
-    public static class SkinSelectPatch$RenderButtonPatch {
-        public SkinSelectPatch$RenderButtonPatch() {
+    public static class RenderButtonPatch {
+        public RenderButtonPatch() {
         }
         
         public static void Postfix(CharacterSelectScreen _inst, SpriteBatch sb) {
@@ -30,8 +30,8 @@ public class SkinSelectPatch {
     clz = CharacterSelectScreen.class,
     method = "update"
     )
-    public static class SkinSelectPatch$UpdateButtonPatch {
-        public SkinSelectPatch$UpdateButtonPatch() {
+    public static class UpdateButtonPatch {
+        public UpdateButtonPatch() {
         }
         
         public static void Prefix(CharacterSelectScreen _inst) {
