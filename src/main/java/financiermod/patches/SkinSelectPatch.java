@@ -1,14 +1,14 @@
 // Source code is decompiled from a .class file using FernFlower decompiler.
 package financiermod.patches;
 
-import basemod.ReflectionHacks;
 import financiermod.ui.SkinSelectScreen;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
-import com.megacrit.cardcrawl.characters.AbstractPlayer.PlayerClass;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.screens.charSelect.CharacterSelectScreen;
+
+import basemod.ReflectionHacks;
 
 public class SkinSelectPatch {
     @SpirePatch(
@@ -20,10 +20,9 @@ public class SkinSelectPatch {
         }
         
         public static void Postfix(CharacterSelectScreen _inst, SpriteBatch sb) {
-            if (SkinSelectPatch.isKokkoroSelected()) {
+            if (SkinSelectPatch.shouldDisplaySkinSelect()) {
                 SkinSelectScreen.Inst.render(sb);
             }
-            
         }
     }
     
@@ -36,18 +35,16 @@ public class SkinSelectPatch {
         }
         
         public static void Prefix(CharacterSelectScreen _inst) {
-            if (SkinSelectPatch.isKokkoroSelected()) {
+            if (SkinSelectPatch.shouldDisplaySkinSelect()) {
                 SkinSelectScreen.Inst.update();
             }
-            
         }
     }
-    
-    
-    public SkinSelectPatch() {
+
+    public static boolean shouldDisplaySkinSelect() {
+        return ReflectionHacks.getPrivate(CardCrawlGame.mainMenuScreen.charSelectScreen, CharacterSelectScreen.class, "anySelected");
     }
     
-    public static boolean isKokkoroSelected() {
-        return CardCrawlGame.chosenCharacter == PlayerClass.DEFECT && (Boolean)ReflectionHacks.getPrivate(CardCrawlGame.mainMenuScreen.charSelectScreen, CharacterSelectScreen.class, "anySelected");
+    public SkinSelectPatch() {
     }
 }

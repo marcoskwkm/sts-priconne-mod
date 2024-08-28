@@ -102,34 +102,31 @@ public class SkinSelectScreen implements ISubscriber, CustomSavable<Integer> {
     }
     
     private void updateInput() {
-        if (CardCrawlGame.chosenCharacter == PlayerClass.DEFECT) {
-            this.leftHb.update();
-            this.rightHb.update();
-            if (this.leftHb.clicked) {
-                this.leftHb.clicked = false;
-                CardCrawlGame.sound.play("UI_CLICK_1");
-                this.index = this.prevIndex();
-                this.refresh();
+        this.leftHb.update();
+        this.rightHb.update();
+        if (this.leftHb.clicked) {
+            this.leftHb.clicked = false;
+            CardCrawlGame.sound.play("UI_CLICK_1");
+            this.index = this.prevIndex();
+            this.refresh();
+        }
+
+        if (this.rightHb.clicked) {
+            this.rightHb.clicked = false;
+            CardCrawlGame.sound.play("UI_CLICK_1");
+            this.index = this.nextIndex();
+            this.refresh();
+        }
+
+        if (InputHelper.justClickedLeft) {
+            if (this.leftHb.hovered) {
+                this.leftHb.clickStarted = true;
             }
             
-            if (this.rightHb.clicked) {
-                this.rightHb.clicked = false;
-                CardCrawlGame.sound.play("UI_CLICK_1");
-                this.index = this.nextIndex();
-                this.refresh();
-            }
-            
-            if (InputHelper.justClickedLeft) {
-                if (this.leftHb.hovered) {
-                    this.leftHb.clickStarted = true;
-                }
-                
-                if (this.rightHb.hovered) {
-                    this.rightHb.clickStarted = true;
-                }
+            if (this.rightHb.hovered) {
+                this.rightHb.clickStarted = true;
             }
         }
-        
     }
     
     public void render(SpriteBatch sb) {
