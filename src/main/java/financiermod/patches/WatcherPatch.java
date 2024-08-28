@@ -1,7 +1,6 @@
 // Source code is decompiled from a .class file using FernFlower decompiler.
 package financiermod.patches;
 
-import com.esotericsoftware.spine.AnimationState;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePrefixPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireReturn;
@@ -43,7 +42,7 @@ public class WatcherPatch {
         @SpirePrefixPatch
         public static void Prefix(AbstractPlayer __instance) {
             if (__instance instanceof Watcher) {
-                AnimationState.TrackEntry e = __instance.state.setAnimation(0, "Skill2", false);
+                __instance.state.setAnimation(0, "Skill2", false);
                 __instance.state.addAnimation(0, "Idle", true, 0.0F);
             }
             

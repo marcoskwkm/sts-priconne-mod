@@ -12,8 +12,6 @@ import com.evacipated.cardcrawl.modthespire.Loader;
 import com.evacipated.cardcrawl.modthespire.ModInfo;
 import com.evacipated.cardcrawl.modthespire.Patcher;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
-import com.megacrit.cardcrawl.core.Settings;
-import com.megacrit.cardcrawl.localization.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.scannotation.AnnotationDB;
@@ -53,41 +51,6 @@ public class FinancierMod implements
     }
  
     public void receiveEditCharacters() {
-    }
-
-    /*----------Localization----------*/
-
-    //This is used to load the appropriate localization files based on language.
-    private static String getLangString()
-    {
-        return Settings.language.name().toLowerCase();
-    }
-    private static final String defaultLanguage = "eng";
-
-    private void loadLocalization(String lang) {
-        //While this does load every type of localization, most of these files are just outlines so that you can see how they're formatted.
-        //Feel free to comment out/delete any that you don't end up using.
-        BaseMod.loadCustomStringsFile(CardStrings.class,
-                localizationPath(lang, "CardStrings.json"));
-        BaseMod.loadCustomStringsFile(CharacterStrings.class,
-                localizationPath(lang, "CharacterStrings.json"));
-        BaseMod.loadCustomStringsFile(EventStrings.class,
-                localizationPath(lang, "EventStrings.json"));
-        BaseMod.loadCustomStringsFile(OrbStrings.class,
-                localizationPath(lang, "OrbStrings.json"));
-        BaseMod.loadCustomStringsFile(PotionStrings.class,
-                localizationPath(lang, "PotionStrings.json"));
-        BaseMod.loadCustomStringsFile(PowerStrings.class,
-                localizationPath(lang, "PowerStrings.json"));
-        BaseMod.loadCustomStringsFile(RelicStrings.class,
-                localizationPath(lang, "RelicStrings.json"));
-        BaseMod.loadCustomStringsFile(UIStrings.class,
-                localizationPath(lang, "UIStrings.json"));
-    }
-
-    //These methods are used to generate the correct filepaths to various parts of the resources folder.
-    public static String localizationPath(String lang, String file) {
-        return resourcesFolder + "/localization/" + lang + "/" + file;
     }
 
     public static String imagePath(String file) {

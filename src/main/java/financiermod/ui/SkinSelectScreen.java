@@ -6,6 +6,7 @@ import basemod.abstracts.CustomSavable;
 import basemod.interfaces.ISubscriber;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.esotericsoftware.spine.AnimationState;
@@ -13,7 +14,6 @@ import com.esotericsoftware.spine.AnimationStateData;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
-import com.megacrit.cardcrawl.characters.AbstractPlayer.PlayerClass;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
@@ -30,20 +30,25 @@ public class SkinSelectScreen implements ISubscriber, CustomSavable<Integer> {
         public String charPath;
         public String shoulder;
         public String name;
-        public String id;
         
-        public Skin(int index, String charPath, String id) {
+        public Skin(int index, String charPath) {
             this.charPath = charPath;
             this.shoulder = FinancierMod.imagePath("kokkoro/shoulder.png");
             this.name = SkinSelectScreen.TEXT[index + 1];
         }
     }
-    
+
+    public interface Func {
+        void apply();
+    }
+
     private static final String[] TEXT = new String[]{"Skin", "Default", "Summer", "New Year", "Ceremonial Dress", "Ranger", "Princess"};
-    private static final ArrayList<Skin> SKINS = new ArrayList();
+    private static final ArrayList<Skin> SKINS = new ArrayList<Skin>();
     public static SkinSelectScreen Inst;
-    public Hitbox leftHb;
-    public Hitbox rightHb;
+    public Hitbox charLeftHb;
+    public Hitbox charRightHb;
+    public Hitbox skinLeftHb;
+    public Hitbox skinRightHb;
     public TextureAtlas atlas;
     public Skeleton skeleton;
     public AnimationStateData stateData;
@@ -58,8 +63,10 @@ public class SkinSelectScreen implements ISubscriber, CustomSavable<Integer> {
     
     public SkinSelectScreen() {
         this.refresh();
-        this.leftHb = new Hitbox(70.0F * Settings.scale, 70.0F * Settings.scale);
-        this.rightHb = new Hitbox(70.0F * Settings.scale, 70.0F * Settings.scale);
+        this.charLeftHb = new Hitbox(70.0F * Settings.scale, 70.0F * Settings.scale);
+        this.charRightHb = new Hitbox(70.0F * Settings.scale, 70.0F * Settings.scale);
+        this.skinLeftHb = new Hitbox(70.0F * Settings.scale, 70.0F * Settings.scale);
+        this.skinRightHb = new Hitbox(70.0F * Settings.scale, 70.0F * Settings.scale);
         BaseMod.subscribe(this);
         BaseMod.addSaveField("Kokkoro_skin", this);
         BaseMod.addSaveField("Defect_skin", this);
@@ -95,37 +102,59 @@ public class SkinSelectScreen implements ISubscriber, CustomSavable<Integer> {
     
     public void update() {
         float centerX = (float)Settings.WIDTH * 0.8F;
-        float centerY = (float)Settings.HEIGHT * 0.5F;
-        this.leftHb.move(centerX - 200.0F * Settings.scale, centerY);
-        this.rightHb.move(centerX + 200.0F * Settings.scale, centerY);
-        this.updateInput();
+        float charCenterY = (float)Settings.HEIGHT * 0.5F;
+        float skinCenterY = charCenterY - 50.0F * Settings.scale;
+        this.charLeftHb.move(centerX - 200.0F * Settings.scale, charCenterY);
+        this.charRightHb.move(centerX + 200.0F * Settings.scale, charCenterY);
+        this.skinLeftHb.move(centerX - 200.0F * Settings.scale, skinCenterY);
+        this.skinRightHb.move(centerX + 200.0F * Settings.scale, skinCenterY);
+        this.updateInputs();
     }
     
-    private void updateInput() {
-        this.leftHb.update();
-        this.rightHb.update();
-        if (this.leftHb.clicked) {
-            this.leftHb.clicked = false;
-            CardCrawlGame.sound.play("UI_CLICK_1");
-            this.index = this.prevIndex();
-            this.refresh();
-        }
+    private void updateInputs() {
+        this.updateInput(charLeftHb, () -> { this.index = this.prevIndex(); });
+        this.updateInput(charRightHb, () -> { this.index = this.nextIndex(); });
+        this.updateInput(skinLeftHb, () -> {});
+        this.updateInput(skinRightHb, () -> {});
+        // this.charLeftHb.update();
+        // this.charRightHb.update();
+        // this.skinLeftHb.update();
+        // this.skinRightHb.update();
+        // if (this.charLeftHb.clicked) {
+        //     this.charLeftHb.clicked = false;
+        //     CardCrawlGame.sound.play("UI_CLICK_1");
+        //     this.index = this.prevIndex();
+        //     this.refresh();
+        // }
 
-        if (this.rightHb.clicked) {
-            this.rightHb.clicked = false;
-            CardCrawlGame.sound.play("UI_CLICK_1");
-            this.index = this.nextIndex();
-            this.refresh();
-        }
+        // if (this.charRightHb.clicked) {
+        //     this.charRightHb.clicked = false;
+        //     CardCrawlGame.sound.play("UI_CLICK_1");
+        //     this.index = this.nextIndex();
+        //     this.refresh();
+        // }
 
-        if (InputHelper.justClickedLeft) {
-            if (this.leftHb.hovered) {
-                this.leftHb.clickStarted = true;
-            }
+        // if (InputHelper.justClickedLeft) {
+        //     if (this.charLeftHb.hovered) {
+        //         this.charLeftHb.clickStarted = true;
+        //     }
             
-            if (this.rightHb.hovered) {
-                this.rightHb.clickStarted = true;
-            }
+        //     if (this.charRightHb.hovered) {
+        //         this.charRightHb.clickStarted = true;
+        //     }
+        // }
+    }
+    
+    private void updateInput(Hitbox hb, Func f) {
+        hb.update();
+        if (hb.clicked) {
+            hb.clicked = false;
+            CardCrawlGame.sound.play("UI_CLICK_1");
+            f.apply();
+            this.refresh();
+        }
+        if (InputHelper.justClickedLeft && hb.hovered) {
+            hb.clickStarted = true;
         }
     }
     
@@ -136,25 +165,12 @@ public class SkinSelectScreen implements ISubscriber, CustomSavable<Integer> {
         FontHelper.renderFontCentered(sb, FontHelper.cardTitleFont, TEXT[0], centerX, centerY + 300.0F * Settings.scale, Color.WHITE, 1.25F);
         Color goldColorAdjusted = Settings.GOLD_COLOR.cpy();
         goldColorAdjusted.a /= 2.0F;
-        float distance = 100.0F * Settings.scale;
         FontHelper.renderFontCentered(sb, FontHelper.cardTitleFont, this.curName, centerX, centerY, Settings.GOLD_COLOR);
-        FontHelper.renderFontCentered(sb, FontHelper.cardTitleFont, this.nextName, centerX + distance * 1.5F, centerY - distance, goldColorAdjusted);
-        if (this.leftHb.hovered) {
-            sb.setColor(Color.LIGHT_GRAY);
-        } else {
-            sb.setColor(Color.WHITE);
-        }
-        
-        sb.draw(ImageMaster.CF_LEFT_ARROW, this.leftHb.cX - 24.0F, this.leftHb.cY - 24.0F, 24.0F, 24.0F, 48.0F, 48.0F, Settings.scale, Settings.scale, 0.0F, 0, 0, 48, 48, false, false);
-        if (this.rightHb.hovered) {
-            sb.setColor(Color.LIGHT_GRAY);
-        } else {
-            sb.setColor(Color.WHITE);
-        }
-        
-        sb.draw(ImageMaster.CF_RIGHT_ARROW, this.rightHb.cX - 24.0F, this.rightHb.cY - 24.0F, 24.0F, 24.0F, 48.0F, 48.0F, Settings.scale, Settings.scale, 0.0F, 0, 0, 48, 48, false, false);
-        this.rightHb.render(sb);
-        this.leftHb.render(sb);
+        FontHelper.renderFontCentered(sb, FontHelper.cardTitleFont, "Skin name", centerX, centerY - 50.0F * Settings.scale, Settings.GOLD_COLOR);
+        this.renderHitbox(sb, charLeftHb, ImageMaster.CF_LEFT_ARROW);
+        this.renderHitbox(sb, charRightHb, ImageMaster.CF_RIGHT_ARROW);
+        this.renderHitbox(sb, skinLeftHb, ImageMaster.CF_LEFT_ARROW);
+        this.renderHitbox(sb, skinRightHb, ImageMaster.CF_RIGHT_ARROW);
     }
     
     public void renderSkin(SpriteBatch sb, float x, float y) {
@@ -170,6 +186,16 @@ public class SkinSelectScreen implements ISubscriber, CustomSavable<Integer> {
             sb.begin();
         }
     }
+
+    public void renderHitbox(SpriteBatch sb, Hitbox hb, Texture image) {
+        if (hb.hovered) {
+            sb.setColor(Color.LIGHT_GRAY);
+        } else {
+            sb.setColor(Color.WHITE);
+        }
+        sb.draw(image, hb.cX - 24.0F, hb.cY - 24.0F, 24.0F, 24.0F, 48.0F, 48.0F, Settings.scale, Settings.scale, 0.0F, 0, 0, 48, 48, false, false);
+        hb.render(sb);
+    }
     
     public void onLoad(Integer arg0) {
         this.index = arg0;
@@ -180,12 +206,12 @@ public class SkinSelectScreen implements ISubscriber, CustomSavable<Integer> {
     }
     
     static {
-        SKINS.add(new Skin(0, FinancierMod.imagePath("kokkoro/char/105961"), "105961"));
-        SKINS.add(new Skin(1, FinancierMod.imagePath("kokkoro/char/107661"), "107661"));
-        SKINS.add(new Skin(2, FinancierMod.imagePath("kokkoro/char/111931"), "111931"));
-        SKINS.add(new Skin(3, FinancierMod.imagePath("kokkoro/char/115531"), "115531"));
-        SKINS.add(new Skin(4, FinancierMod.imagePath("kokkoro/char/125331"), "125331"));
-        SKINS.add(new Skin(5, FinancierMod.imagePath("kokkoro/char/180531"), "180531"));
+        SKINS.add(new Skin(0, FinancierMod.imagePath("kokkoro/char/105961")));
+        SKINS.add(new Skin(1, FinancierMod.imagePath("kokkoro/char/107661")));
+        SKINS.add(new Skin(2, FinancierMod.imagePath("kokkoro/char/111931")));
+        SKINS.add(new Skin(3, FinancierMod.imagePath("kokkoro/char/115531")));
+        SKINS.add(new Skin(4, FinancierMod.imagePath("kokkoro/char/125331")));
+        SKINS.add(new Skin(5, FinancierMod.imagePath("kokkoro/char/180531")));
         Inst = new SkinSelectScreen();
     }
 }

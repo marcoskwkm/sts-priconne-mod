@@ -1,7 +1,6 @@
 // Source code is decompiled from a .class file using FernFlower decompiler.
 package financiermod.patches;
 
-import com.esotericsoftware.spine.AnimationState;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePrefixPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireReturn;
@@ -18,8 +17,8 @@ public class DefectPatch {
     clz = AbstractPlayer.class,
     method = "damage"
     )
-    public static class DefectPatch$damagePatch2 {
-        public DefectPatch$damagePatch2() {
+    public static class DamagePatch {
+        public DamagePatch() {
         }
         
         @SpirePrefixPatch
@@ -43,7 +42,7 @@ public class DefectPatch {
         @SpirePrefixPatch
         public static void Prefix(AbstractPlayer __instance) {
             if (__instance instanceof Defect) {
-                AnimationState.TrackEntry e = __instance.state.setAnimation(0, "Skill2", false);
+                __instance.state.setAnimation(0, "Skill2", false);
                 __instance.state.addAnimation(0, "Idle", true, 0.0F);
             }
             
