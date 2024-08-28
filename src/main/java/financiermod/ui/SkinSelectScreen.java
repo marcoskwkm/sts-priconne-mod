@@ -28,9 +28,12 @@ public class SkinSelectScreen implements ISubscriber, CustomSavable<Integer> {
         public String name;
         public Skin[] skins;
 
-        public CharacterSkins(String character, Skin[] skins) {
+        public CharacterSkins(String character, String shoulderPath, SkinMetadata[] skins) {
             this.name = character;
-            this.skins = skins;
+            this.skins = new Skin[skins.length];
+            for (int i = 0; i < skins.length; i++) {
+                this.skins[i] = new Skin(skins[i].name, shoulderPath, skins[i].charPath);
+            }
         }
     }
 
@@ -39,10 +42,20 @@ public class SkinSelectScreen implements ISubscriber, CustomSavable<Integer> {
         public String shoulder;
         public String name;
         
-        public Skin(String name, String charPath) {
+        public Skin(String name, String shoulderPath, String charPath) {
             this.charPath = charPath;
-            this.shoulder = FinancierMod.imagePath("kokkoro/shoulder.png");
+            this.shoulder = shoulderPath;
             this.name = name;
+        }
+    }
+
+    public static class SkinMetadata {
+        public String charPath;
+        public String name;
+
+        public SkinMetadata(String name, String charPath) {
+            this.name = name;
+            this.charPath = charPath;
         }
     }
 
@@ -227,34 +240,34 @@ public class SkinSelectScreen implements ISubscriber, CustomSavable<Integer> {
     }
     
     static {
-        Skin[] pecorineSkins = {
-            new Skin("Default", FinancierMod.imagePath("pecorine/char/105861")),
-            new Skin("Summer", FinancierMod.imagePath("pecorine/char/107561")),
-            new Skin("New Year", FinancierMod.imagePath("pecorine/char/111831")),
-            new Skin("Overload", FinancierMod.imagePath("pecorine/char/121031")),
-            new Skin("Christmas", FinancierMod.imagePath("pecorine/char/127931")),
-            new Skin("Princess", FinancierMod.imagePath("pecorine/char/180431"))
+        SkinMetadata[] pecorineSkins = {
+            new SkinMetadata("Default", FinancierMod.imagePath("pecorine/char/105861")),
+            new SkinMetadata("Summer", FinancierMod.imagePath("pecorine/char/107561")),
+            new SkinMetadata("New Year", FinancierMod.imagePath("pecorine/char/111831")),
+            new SkinMetadata("Overload", FinancierMod.imagePath("pecorine/char/121031")),
+            new SkinMetadata("Christmas", FinancierMod.imagePath("pecorine/char/127931")),
+            new SkinMetadata("Princess", FinancierMod.imagePath("pecorine/char/180431"))
         };
-        Skin[] kyarylSkils = {
-            new Skin("Default", FinancierMod.imagePath("kyaryl/char/106061")),
-            new Skin("Summer", FinancierMod.imagePath("kyaryl/char/107861")),
-            new Skin("New Year", FinancierMod.imagePath("kyaryl/char/112031")),
-            new Skin("Overload", FinancierMod.imagePath("kyaryl/char/121131")),
-            new Skin("Transfer Student", FinancierMod.imagePath("kyaryl/char/127231")),
-            new Skin("Princess", FinancierMod.imagePath("kyaryl/char/180631"))
+        SkinMetadata[] kyarylSkils = {
+            new SkinMetadata("Default", FinancierMod.imagePath("kyaryl/char/106061")),
+            new SkinMetadata("Summer", FinancierMod.imagePath("kyaryl/char/107861")),
+            new SkinMetadata("New Year", FinancierMod.imagePath("kyaryl/char/112031")),
+            new SkinMetadata("Overload", FinancierMod.imagePath("kyaryl/char/121131")),
+            new SkinMetadata("Transfer Student", FinancierMod.imagePath("kyaryl/char/127231")),
+            new SkinMetadata("Princess", FinancierMod.imagePath("kyaryl/char/180631"))
         };
-        Skin[] kokkoroSkins = {
-            new Skin("Default", FinancierMod.imagePath("kokkoro/char/105961")),
-            new Skin("Summer", FinancierMod.imagePath("kokkoro/char/107661")),
-            new Skin("New Year", FinancierMod.imagePath("kokkoro/char/111931")),
-            new Skin("Ceremonial Dress", FinancierMod.imagePath("kokkoro/char/115531")),
-            new Skin("Ranger", FinancierMod.imagePath("kokkoro/char/125331")),
-            new Skin("Princess", FinancierMod.imagePath("kokkoro/char/180531"))
+        SkinMetadata[] kokkoroSkins = {
+            new SkinMetadata("Default", FinancierMod.imagePath("kokkoro/char/105961")),
+            new SkinMetadata("Summer", FinancierMod.imagePath("kokkoro/char/107661")),
+            new SkinMetadata("New Year", FinancierMod.imagePath("kokkoro/char/111931")),
+            new SkinMetadata("Ceremonial Dress", FinancierMod.imagePath("kokkoro/char/115531")),
+            new SkinMetadata("Ranger", FinancierMod.imagePath("kokkoro/char/125331")),
+            new SkinMetadata("Princess", FinancierMod.imagePath("kokkoro/char/180531"))
         };
         characters = new CharacterSkins[] {
-            new CharacterSkins(CharacterNames.pecorine, pecorineSkins),
-            new CharacterSkins(CharacterNames.kyaryl, kyarylSkils),
-            new CharacterSkins(CharacterNames.kokkoro, kokkoroSkins),
+            new CharacterSkins(CharacterNames.pecorine, FinancierMod.imagePath("pecorine/shoulder.png"), pecorineSkins),
+            new CharacterSkins(CharacterNames.kyaryl, FinancierMod.imagePath("kyaryl/shoulder.png"), kyarylSkils),
+            new CharacterSkins(CharacterNames.kokkoro, FinancierMod.imagePath("kokkoro/shoulder.png"), kokkoroSkins),
         };
 
         Inst = new SkinSelectScreen();
