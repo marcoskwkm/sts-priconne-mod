@@ -17,7 +17,3 @@ I do not own any of the sprites used and all credits go to the original authors.
 # Disclaimer
 
 I made this mod for my own personal use. I haven't tested it enough so it can be buggy. Use it at your own risk. Feel free to open an issue if you encounter any problems.
-
-# Known bugs
-
-- Skin selection is not preserved when you save and restart the game (it defaults to Pecorine with default skin). This is not a priority to me because I usually do runs in a single playthrough, but feel free to open a PR with a fix.
