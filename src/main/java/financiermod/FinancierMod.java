@@ -1,9 +1,7 @@
 package financiermod;
 
 import basemod.BaseMod;
-import basemod.interfaces.EditCharactersSubscriber;
-import basemod.interfaces.PostInitializeSubscriber;
-import basemod.interfaces.StartGameSubscriber;
+import financiermod.patches.SaveState;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglFileHandle;
@@ -12,6 +10,7 @@ import com.evacipated.cardcrawl.modthespire.Loader;
 import com.evacipated.cardcrawl.modthespire.ModInfo;
 import com.evacipated.cardcrawl.modthespire.Patcher;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.scannotation.AnnotationDB;
@@ -19,8 +18,7 @@ import org.scannotation.AnnotationDB;
 import java.util.*;
 
 @SpireInitializer
-public class FinancierMod implements
-        PostInitializeSubscriber, EditCharactersSubscriber, StartGameSubscriber {
+public class FinancierMod {
     public static ModInfo info;
     public static String modID; //Edit your pom.xml to change this
     static { loadModInfo(); }
@@ -35,22 +33,12 @@ public class FinancierMod implements
 
     //This will be called by ModTheSpire because of the @SpireInitializer annotation at the top of the class.
     public static void initialize() {
-        System.out.println("Hello, world!");
         new FinancierMod();
     }
 
     public FinancierMod() {
-        BaseMod.subscribe(this); //This will make BaseMod trigger all the subscribers at their appropriate times.
         logger.info(modID + " subscribed to BaseMod.");
-    }
-
-    public void receivePostInitialize() {
-    }
-    
-    public void receiveStartGame() {
-    }
- 
-    public void receiveEditCharacters() {
+        BaseMod.addSaveField(SaveState.SAVE_ID, new SaveState());
     }
 
     public static String imagePath(String file) {

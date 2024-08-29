@@ -1,8 +1,9 @@
 // Source code is decompiled from a .class file using FernFlower decompiler.
 package financiermod.ui;
 
-import basemod.abstracts.CustomSavable;
+import basemod.BaseMod;
 import basemod.interfaces.ISubscriber;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,7 +24,22 @@ import com.megacrit.cardcrawl.helpers.input.InputHelper;
 
 import financiermod.FinancierMod;
 
-public class SkinSelectScreen implements ISubscriber, CustomSavable<Integer> {
+interface Func {
+    void apply();
+}
+
+class SkinMetadata {
+    public String charPath;
+    public String name;
+
+    public SkinMetadata(String name, String charPath) {
+        this.name = name;
+        this.charPath = charPath;
+    }
+}
+
+
+public class SkinSelectScreen implements ISubscriber {
     public static class CharacterSkins {
         public String name;
         public Skin[] skins;
@@ -49,20 +65,6 @@ public class SkinSelectScreen implements ISubscriber, CustomSavable<Integer> {
         }
     }
 
-    public static class SkinMetadata {
-        public String charPath;
-        public String name;
-
-        public SkinMetadata(String name, String charPath) {
-            this.name = name;
-            this.charPath = charPath;
-        }
-    }
-
-    public interface Func {
-        void apply();
-    }
-    
     public static class CharacterNames {
         public static final String pecorine = "Pecorine";
         public static final String kyaryl = "Kyaryl";
@@ -91,6 +93,9 @@ public class SkinSelectScreen implements ISubscriber, CustomSavable<Integer> {
     public static Skin getSkin() {
         return SkinSelectScreen.getCharacter().skins[Inst.skinIndex];
     }
+    public static Skin getSkin(int characterIndex, int skinIndex) {
+        return characters[characterIndex].skins[skinIndex];
+    }
     
     public SkinSelectScreen() {
         this.refresh();
@@ -99,9 +104,7 @@ public class SkinSelectScreen implements ISubscriber, CustomSavable<Integer> {
         this.skinLeftHb = new Hitbox(70.0F * Settings.scale, 70.0F * Settings.scale);
         this.skinRightHb = new Hitbox(70.0F * Settings.scale, 70.0F * Settings.scale);
         this.disabledHb = new Hitbox(80.0F * Settings.scale, 80.0F * Settings.scale);
-        // BaseMod.subscribe(this);
-        // BaseMod.addSaveField("Kokkoro_skin", this);
-        // BaseMod.addSaveField("Defect_skin", this);
+        BaseMod.subscribe(this);
     }
     
     public void loadAnimation(String atlasUrl, String skeletonUrl, float scale) {
@@ -230,15 +233,7 @@ public class SkinSelectScreen implements ISubscriber, CustomSavable<Integer> {
         sb.draw(image, hb.cX - halfSize, hb.cY - halfSize, /*halfSize*/ size, /*halfSize*/ size, size, size, Settings.scale, Settings.scale, 0.0F, 0, 0, size, size, false, false);
         hb.render(sb);
     }
-    
-    public void onLoad(Integer arg0) {
-        this.skinIndex = arg0;
-    }
-    
-    public Integer onSave() {
-        return this.skinIndex;
-    }
-    
+
     static {
         SkinMetadata[] pecorineSkins = {
             new SkinMetadata("Default", FinancierMod.imagePath("pecorine/char/105861")),
