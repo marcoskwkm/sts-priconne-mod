@@ -42,6 +42,10 @@ public class AnimationUtils {
         JsonElement saveDataJson = modSaves.get(SaveState.SAVE_ID);
         SaveState.SaveData saveData = new Gson().fromJson(saveDataJson, new SaveState().savedType());
         if (saveData != null && !saveData.disabled) {
+            SkinSelectScreen.Inst.characterIndex = saveData.characterIndex;
+            SkinSelectScreen.Inst.skinIndex = saveData.skinIndex;
+            SkinSelectScreen.Inst.disabled = saveData.disabled;
+            SkinSelectScreen.Inst.refresh();
             return SkinSelectScreen.getSkin(saveData.characterIndex, saveData.skinIndex);
         }
         return null;
