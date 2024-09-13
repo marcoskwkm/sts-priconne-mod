@@ -52,8 +52,10 @@ public class AnimationPatch {
                 return;
             }
             
-            __instance.state.setAnimation(0, "Skill2", false);
-            __instance.state.addAnimation(0, "Idle", true, 0.0F);
+            if (SkinSelectScreen.getCharacter().name != SkinSelectScreen.CharacterNames.kyaryl) {
+                __instance.state.setAnimation(0, "Skill2", false);
+                __instance.state.addAnimation(0, "Idle", true, 0.0F);
+            }
         }
     }
     
